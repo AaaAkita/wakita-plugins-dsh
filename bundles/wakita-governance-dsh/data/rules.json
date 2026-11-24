@@ -1,0 +1,72 @@
+{
+  "dangerousCommands": [
+    [
+      "\\brm\\s+-[a-z]*r[a-z]*f?\\s+/(?:\\s|$)",
+      "禁止递归删除根目录 /"
+    ],
+    [
+      "\\brm\\s+-[a-z]*r[a-z]*f?\\s+~(?:\\s|$)",
+      "禁止递归删除家目录 ~"
+    ],
+    [
+      "\\brm\\s+-[a-z]*r[a-z]*f?\\s+/\\*",
+      "禁止递归删除根目录下所有文件 /*"
+    ],
+    [
+      "\\brm\\s+-[a-z]*r[a-z]*f?\\s+[A-Z]:\\\\(?:\\s|$)",
+      "禁止递归删除盘符根目录（如 C:\\）"
+    ],
+    [
+      "\\brm\\s+-[a-z]*r[a-z]*f?\\s+%USERPROFILE%",
+      "禁止递归删除用户目录"
+    ],
+    [
+      "\\bgit\\s+push\\s+(?:--force|--force-with-lease|-f)\\b.*\\b(?:main|master)\\b",
+      "禁止强制推送到 main/master 分支"
+    ],
+    [
+      "\\bgit\\s+push\\s+-f\\s+origin\\s+(?:main|master)\\b",
+      "禁止强制推送到 main/master 分支"
+    ],
+    [
+      "\\bgit\\s+reset\\s+--hard\\s*(?:$|&&|\\||;)",
+      "git reset --hard 必须指定 commit，禁止裸重置"
+    ],
+    [
+      "\\bDROP\\s+(?:TABLE|DATABASE|SCHEMA)\\b",
+      "禁止 DROP TABLE/DATABASE/SCHEMA"
+    ],
+    [
+      "\\bTRUNCATE\\s+TABLE\\b",
+      "禁止 TRUNCATE TABLE"
+    ],
+    [
+      "\\bchmod\\s+-R\\s+777\\s+/(?:\\s|$)",
+      "禁止对根目录递归 777"
+    ],
+    [
+      "\\bmkfs\\b",
+      "禁止格式化文件系统（mkfs）"
+    ],
+    [
+      "\\bdd\\s+if=.*of=/dev/",
+      "禁止 dd 写入设备文件"
+    ],
+    [
+      ":\\(\\)\\{\\s*:\\|:\\s*&\\s*\\};\\s*:",
+      "禁止 fork bomb"
+    ]
+  ],
+  "defaultProtectedFiles": [
+    ".env",
+    ".env.local",
+    ".env.production",
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml",
+    ".git/config",
+    ".git/HEAD",
+    ".gitignore"
+  ],
+  "protectedFileMsg": "该文件受 wakita-governance 保护，禁止修改/删除：{path}"
+}

@@ -1,0 +1,4 @@
+- insert:
+    - id: wakita-toolkit-dsh
+      name: wakita-toolkit-dsh
+      config: {}

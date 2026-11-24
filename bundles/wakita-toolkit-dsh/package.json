@@ -1,0 +1,30 @@
+{
+  "name": "wakita-toolkit-dsh",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "wakita 开发工具包（DSH 版）：39 个领域技能，随插件注册到 DSH 技能目录。",
+  "exports": {
+    ".": "./index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.png",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "engines": {
+    "dsh": "^0.2.3-alpha.2"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "skills",
+    "locale/*.json",
+    "docs",
+    "icon.png",
+    "cordis.patch.yml"
+  ]
+}

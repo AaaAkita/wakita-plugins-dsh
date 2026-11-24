@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Wakita 管控核心（DSH 版）",
+    "description": "危险操作拦截、写操作审计、工作规范注入、/audit 与 /lock 命令，以及 scout / builder / auditor / ace 四个子代理角色。",
+    "detail": "docs/DETAIL.md"
+  }
+}

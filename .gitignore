@@ -1,0 +1,13 @@
+# OS / editor
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+
+# Node（当前无构建产物，保留以防后续加脚本依赖）
+node_modules/
+*.log
+
+# 本地运行态数据（DSH 默认写到 $DSH_HOME/wakita，不在仓库内）
+audit.log
+protected.json

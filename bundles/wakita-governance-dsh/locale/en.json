@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Wakita governance (DSH)",
+    "description": "Dangerous-command guard, write audit log, work norms, /audit and /lock commands, and four wakita subagent roles (scout, builder, auditor, ace).",
+    "detail": "docs/DETAIL.md"
+  }
+}

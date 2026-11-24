@@ -1,0 +1,34 @@
+{
+  "name": "wakita-governance-dsh",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "wakita 管控核心（DSH 版）：危险操作拦截、写操作审计、工作规范注入、/audit /lock 命令，以及 scout/builder/auditor/ace 四个子代理角色。",
+  "exports": {
+    ".": "./index.js",
+    "./preset-role": "./preset-role.mjs",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.png",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "engines": {
+    "dsh": "^0.2.3-alpha.2"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "files": [
+    "index.js",
+    "preset-role.mjs",
+    "lib",
+    "data",
+    "roles",
+    "skills",
+    "locale/*.json",
+    "docs",
+    "icon.png",
+    "cordis.patch.yml"
+  ]
+}

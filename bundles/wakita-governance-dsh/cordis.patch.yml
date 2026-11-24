@@ -1,0 +1,244 @@
+# wakita-governance-dsh 的 Loader 补丁
+#
+# 1) Host 插件：危险命令拦截 / 写操作审计 / 工作规范 / /audit、/lock 命令 / using-wakita 技能
+# 2) 4 个角色 preset：scout / builder / auditor / ace
+# 3) 4 个委派工具：wakita_scout / wakita_builder / wakita_auditor / wakita_ace
+#
+# 说明：委派工具放在 Host 层而不是改 preset-standard，避免整体覆盖 DSH 自带 preset 的
+# 完整 config（升级即碎）。这些工具对所有会话可见，等价于 ZCode 版里全局可见的 @wakita-* agent。
+- insert:
+    - id: wakita-governance-dsh
+      name: wakita-governance-dsh
+      config: {}
+
+    # ------------------------------------------------------------------ 角色 preset
+
+    - id: preset-wakita-scout
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: wakita-scout
+        name: Wakita Scout
+        description: 只读代码库探索：编码前定位现有结构、相似功能、依赖与风险，输出带文件:行号的报告。
+        order: 101
+        plugins:
+          - id: persona
+            name: wakita-governance-dsh/preset-role
+            config:
+              role: scout
+          - id: agent-instructions
+            name: '@deepseek-ai/dsh-agent-instructions'
+            config:
+              maxBytes: 65536
+          - id: tool-fs
+            name: '@deepseek-ai/dsh-tool-fs'
+            config:
+              write: false
+              edit: false
+              applyPatch: false
+          - id: tool-fs-search
+            name: '@deepseek-ai/dsh-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - id: tool-pwsh
+            name: '@deepseek-ai/dsh-tool-pwsh'
+            disabled: !!js process.platform !== 'win32'
+          - id: tool-bash
+            name: '@deepseek-ai/dsh-tool-bash'
+            disabled: !!js process.platform === 'win32'
+          - id: tool-todo
+            name: '@deepseek-ai/dsh-tool-todo'
+            config:
+              allowParallelInProgress: true
+          - id: tool-skill
+            name: '@deepseek-ai/dsh-tool-skill'
+          - id: compaction
+            name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+            config:
+              - id: compaction-basic
+                name: '@deepseek-ai/dsh-compaction-basic'
+              - id: command-compact
+                name: '@deepseek-ai/dsh-command-compact'
+
+    - id: preset-wakita-builder
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: wakita-builder
+        name: Wakita Builder
+        description: 按 Spec/Plan 实现代码并自验证；不做架构决策，不扩需求。
+        order: 102
+        plugins:
+          - id: persona
+            name: wakita-governance-dsh/preset-role
+            config:
+              role: builder
+          - id: agent-instructions
+            name: '@deepseek-ai/dsh-agent-instructions'
+            config:
+              maxBytes: 65536
+          - id: tool-fs
+            name: '@deepseek-ai/dsh-tool-fs'
+          - id: tool-fs-search
+            name: '@deepseek-ai/dsh-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - id: tool-pwsh
+            name: '@deepseek-ai/dsh-tool-pwsh'
+            disabled: !!js process.platform !== 'win32'
+          - id: tool-bash
+            name: '@deepseek-ai/dsh-tool-bash'
+            disabled: !!js process.platform === 'win32'
+          - id: tool-todo
+            name: '@deepseek-ai/dsh-tool-todo'
+            config:
+              allowParallelInProgress: true
+          - id: tool-skill
+            name: '@deepseek-ai/dsh-tool-skill'
+          - id: compaction
+            name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+            config:
+              - id: compaction-basic
+                name: '@deepseek-ai/dsh-compaction-basic'
+              - id: command-compact
+                name: '@deepseek-ai/dsh-command-compact'
+
+    - id: preset-wakita-auditor
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: wakita-auditor
+        name: Wakita Auditor
+        description: 代码审查：对照规范与 spec 找问题，每条带文件:行号证据。
+        order: 103
+        plugins:
+          - id: persona
+            name: wakita-governance-dsh/preset-role
+            config:
+              role: auditor
+          - id: agent-instructions
+            name: '@deepseek-ai/dsh-agent-instructions'
+            config:
+              maxBytes: 65536
+          - id: tool-fs
+            name: '@deepseek-ai/dsh-tool-fs'
+            config:
+              write: false
+              edit: false
+              applyPatch: false
+          - id: tool-fs-search
+            name: '@deepseek-ai/dsh-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - id: tool-pwsh
+            name: '@deepseek-ai/dsh-tool-pwsh'
+            disabled: !!js process.platform !== 'win32'
+          - id: tool-bash
+            name: '@deepseek-ai/dsh-tool-bash'
+            disabled: !!js process.platform === 'win32'
+          - id: tool-todo
+            name: '@deepseek-ai/dsh-tool-todo'
+            config:
+              allowParallelInProgress: true
+          - id: tool-skill
+            name: '@deepseek-ai/dsh-tool-skill'
+          - id: compaction
+            name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+            config:
+              - id: compaction-basic
+                name: '@deepseek-ai/dsh-compaction-basic'
+              - id: command-compact
+                name: '@deepseek-ai/dsh-command-compact'
+
+    - id: preset-wakita-ace
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: wakita-ace
+        name: Wakita Ace
+        description: 攻坚：常规手段失效或 Bug 多次复现时做证据链根因分析，输出最小变更方案（只读）。
+        order: 104
+        plugins:
+          - id: persona
+            name: wakita-governance-dsh/preset-role
+            config:
+              role: ace
+          - id: agent-instructions
+            name: '@deepseek-ai/dsh-agent-instructions'
+            config:
+              maxBytes: 65536
+          - id: tool-fs
+            name: '@deepseek-ai/dsh-tool-fs'
+            config:
+              write: false
+              edit: false
+              applyPatch: false
+          - id: tool-fs-search
+            name: '@deepseek-ai/dsh-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - id: tool-pwsh
+            name: '@deepseek-ai/dsh-tool-pwsh'
+            disabled: !!js process.platform !== 'win32'
+          - id: tool-bash
+            name: '@deepseek-ai/dsh-tool-bash'
+            disabled: !!js process.platform === 'win32'
+          - id: tool-todo
+            name: '@deepseek-ai/dsh-tool-todo'
+            config:
+              allowParallelInProgress: true
+          - id: tool-skill
+            name: '@deepseek-ai/dsh-tool-skill'
+          - id: compaction
+            name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+            config:
+              - id: compaction-basic
+                name: '@deepseek-ai/dsh-compaction-basic'
+              - id: command-compact
+                name: '@deepseek-ai/dsh-command-compact'
+
+    # ------------------------------------------------------------------ 委派工具
+    #
+    # 每个工具钉死一个角色 preset。想给某个角色固定模型，在该行 config 里加：
+    #   agentOptions:
+    #     provider: <provider>
+    #     model: <model>
+    #     reasoningEffort: <effort>   # 可选
+    # 不加则子代理继承父会话路由。
+
+    - id: tool-wakita-scout
+      name: '@deepseek-ai/dsh-tool-subagent'
+      config:
+        provider: spawn
+        toolName: wakita_scout
+        agentPreset: wakita-scout
+
+    - id: tool-wakita-builder
+      name: '@deepseek-ai/dsh-tool-subagent'
+      config:
+        provider: spawn
+        toolName: wakita_builder
+        agentPreset: wakita-builder
+        # modelSelection: true   # 想允许模型为每次调用选模型时打开
+
+    - id: tool-wakita-auditor
+      name: '@deepseek-ai/dsh-tool-subagent'
+      config:
+        provider: spawn
+        toolName: wakita_auditor
+        agentPreset: wakita-auditor
+
+    - id: tool-wakita-ace
+      name: '@deepseek-ai/dsh-tool-subagent'
+      config:
+        provider: spawn
+        toolName: wakita_ace
+        agentPreset: wakita-ace

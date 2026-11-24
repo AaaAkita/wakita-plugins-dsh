@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Wakita 开发工具包（DSH 版）",
+    "description": "39 个领域技能（MySQL / Docker / 部署 / 前端 / 审查 / 排障等），安装后注册进当前 DSH profile，所有会话可用。",
+    "detail": "docs/DETAIL.md"
+  }
+}

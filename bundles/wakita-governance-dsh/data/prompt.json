@@ -1,0 +1,39 @@
+{
+  "norms": "[wakita 工作规范]\n1. 提交信息（commit message）使用中文，类型前缀用英文。\n2. 改动代码前先定位，结论带「文件:行号」证据。\n3. 找不到证据明说\"未找到\"，不臆测。\n4. 危险操作（rm -rf / 强推 / DROP 等）会被自动拦截。\n5. 分支合并至主干后可复盘：有无可复用方案值得沉淀为 skill。\n6. 接到代码改动需求时，按 using-wakita 工作流执行：先查 docs/specs/ 有无现成 spec → 分级（小/中/大）→ 中/大任务写 spec 留档 → Plan 用 EnterPlanMode 制定 → 调度 scout/builder/auditor（深水区 Bug 升级 wakita-ace 攻坚）→ auditor 通过后标记 spec「开发完成」。\n7. 需求模糊时先加载 brainstorm skill 做头脑风暴，想清楚再写 spec。禁止直接开写。\n8. 调用子智能体时，同一任务/阶段/角色优先用 SendMessage + 原 agentId 延续已有子会话，不要无理由新开（重开会丢失缓存，贵模型成本尤其高）；换阶段/换角色/会话失效才新开。\n9. 大模块写完后、准备继续叠加功能前，先加载 clean-home skill 做结构审查（清房间）；它只做编排，会按步骤加载领域 skill。审查默认只出报告，不改代码。",
+  "hints": [
+    {
+      "id": "packaging",
+      "keywords": [
+        "打包",
+        "出包",
+        "构建 exe",
+        "build.py",
+        "build.sh",
+        "pyinstaller",
+        "PyInstaller",
+        "打一个 v",
+        "发布版本",
+        "打包成exe",
+        "打包为exe"
+      ],
+      "text": "[pyinstaller-packaging]\n- packaging.json 存在 → 只确认版本号 + 临时变更\n- 不存在 → 5 个默认值问题（回车跳过）\n- 构建成功后自动写回 JSON"
+    },
+    {
+      "id": "clean-home",
+      "keywords": [
+        "模块写完了",
+        "模块写完",
+        "帮我审",
+        "结构太乱",
+        "代码太乱",
+        "结构不对",
+        "代码看不懂",
+        "该不该重构",
+        "能不能继续加",
+        "清理房间",
+        "clean-home"
+      ],
+      "text": "[clean-home 清理房间]\n- 命中结构审查触发词：先加载 clean-home skill，按它的步骤逐项加载领域 skill。\n- clean-home 只做编排，不替代领域 skill；默认只出报告，不改代码。"
+    }
+  ]
+}
